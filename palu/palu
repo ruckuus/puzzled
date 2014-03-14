@@ -1,0 +1,53 @@
+#!/bin/bash
+
+declare -a commands=("ls" "pwd" "touch")
+# Servers should come from configuration
+declare -a servers=("local.deployah.com" "local.deploylah.com")
+
+function cleanup {
+  echo "Cleanup"
+  exit
+}
+
+function do_cmd {
+  for s in "${servers[@]}"
+  do
+    echo -e -n "$s:\n"
+    ssh $s $1 
+  done
+}
+
+function show_servers {
+  echo -n -e "Servers;\n"
+  for s in "${servers[@]}"
+  do
+    echo -e -n "- $s\n"
+  done
+
+}
+
+function process_command {
+  case "$1" in
+    "exit")
+      cleanup
+      ;;
+    "quit")
+      cleanup
+      ;;
+    "servers")
+      show_servers
+      ;;
+    *)
+      do_cmd "$1"
+      ;;
+  esac
+}
+
+trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT
+
+while true;
+do
+  echo -n "palu> "
+  read -e _p
+  [ "x$_p" != "x" ] && process_command "$_p"
+done
