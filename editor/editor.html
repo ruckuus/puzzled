@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="menu"></div>
+    <div id="container"></div>
+    <script src="kinetic-v4.3.2-beta.js"></script>
+    <script>
+      function loadImages(sources, callback) {
+        var images = {};
+        var loadedImages = 0;
+        var numImages = 0;
+        // get num of sources
+        for(var src in sources) {
+          numImages++; 
+        }
+        for(var src in sources) {
+          images[src] = new Image();
+          images[src].onload = function() {
+            if(++loadedImages >= numImages) {
+              callback(images);
+            }
+          };
+          images[src].src = sources[src];
+        }
+      }
+
+      function drawBackground (background, bgImage) {
+        var canvas = background.getCanvas();
+        var context = background.getContext();
+
+        context.drawImage(bgImage, 0, 0);
+      }
+
+      function initStage(images) {
+        var stage = new Kinetic.Stage({
+          container: 'container',
+          width: 840,
+          height: 840
+        });
+
+        var layer = new Kinetic.Layer();
+
+        var background = new Kinetic.Layer();
+
+        // darth vader
+        var lemonSunflowerImg = new Kinetic.Image({
+          image: images.lemonSunflower,
+          x: 100,
+          y: 40,
+          width: 300,
+          height: 500,
+          draggable: true,
+          stroke: 'red',
+          strokeWidth: 10,
+          strokeEnabled: false
+        });
+
+        layer.add(lemonSunflowerImg);
+
+        // balloon
+        var balloonImg = new Kinetic.Image({
+          image: images.balloon,
+          x: 350,
+          y: 55,
+          width: 200,
+          height: 104,
+          draggable: true,
+          stroke: 'red',
+          strokeWidth: 10,
+          strokeEnabled: false
+        });
+
+        layer.add(balloonImg);
+        stage.add(background);
+        stage.add(layer);
+
+        // use event delegation to update pointer style
+        // and apply borders
+        layer.on('mouseover', function(evt) {
+          var shape = evt.shape;
+          document.body.style.cursor = 'pointer'; 
+          shape.enableStroke();
+          layer.draw();
+        });
+        layer.on('mouseout', function(evt) {
+          var shape = evt.shape;
+          document.body.style.cursor = 'default';  
+          shape.disableStroke();
+          layer.draw();
+        });
+      }
+      var sources = {
+        lemonSunflower: 'lemon-sunflower.png',
+        balloon: 'balloon-left.png',
+        background: 'background.jpg'
+      };
+      loadImages(sources, initStage);
+
+    </script>
+  </body>
+</html>
