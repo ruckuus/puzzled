@@ -1,0 +1,13 @@
+{
+    "name": "topkeywords",
+    "type": "project",
+    "description": "redis top keywords",
+    "require": {
+        "php": ">=5.4.0",
+        "predis/predis": "dev-master"
+    },
+    "require-dev": {
+        "predis/predis": "dev-master"
+    },
+    "minimum-stability": "dev"
+}
