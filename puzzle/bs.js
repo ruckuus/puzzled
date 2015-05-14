@@ -4,17 +4,15 @@ var doSearch = function(array, targetValue) {
     var min = 0;
     var max = array.length - 1;
     var guess;
-    
+
     while (max >= min) {
         guess = Math.floor(min + ((max - min) / 2));
-        
+
         if (array[guess] === targetValue) {
             return guess;
         } else if (array[guess] < targetValue) {
             min = guess + 1;
-            max = max - 1;
         } else {
-            min = min + 1;
             max = guess - 1;
         }
     }
@@ -27,4 +25,12 @@ var primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37,
 var result = doSearch(primes, 73);
 console.log("Found prime at index " + result);
 
+var result = doSearch(primes, 2);
+console.log("Found prime at index " + result);
+
+var result = doSearch(primes, 67);
+console.log("Found prime at index " + result);
+
+var result = doSearch(primes, 89);
+console.log("Found prime at index " + result);
 // Program.assertEqual(doSearch(primes, 73), 20);
